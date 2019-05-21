@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define debug_moon_pos 1
+#define debug_moon_pos 0
 #define R_win 5  /* radius of the window */
 #define id_max 4 /* the number of off-source windows in each side */
 
@@ -31,8 +31,9 @@ int main() {
   /*	read data from experiment data	*/
   while (
       (scanf("%lf %d %lf %lf %lf %lf %lf %d %d %lf %lf %lf %lf %lf %lf %lf %lf",
-             &mjd, &nhit, &npea, &zen, &azi, &xc, &yc, &ndetc, &nfitc, &npec, &zenc, &azic,
-             &omega, &chi2p, &chi2c, &compactness, &pincness)) > 0) {
+             &mjd, &nhit, &npea, &zen, &azi, &xc, &yc, &ndetc, &nfitc, &npec,
+             &zenc, &azic, &omega, &chi2p, &chi2c, &compactness, &pincness)) >
+      0) {
 
     /********** CRAB position **********/
     RA = 83.633212;
@@ -58,7 +59,7 @@ int main() {
     }
 
     /********** avoid windows overlap **********/
-    if (THETA >= THETA_min && THETA < 45 && THETA >0.)
+    if (THETA >= THETA_min && THETA < 45 && THETA > 0.)
     // if(THETA > 7.8 && THETA < 70)
     {
       for (int id = -id_max; id <= id_max; id++) {
@@ -77,15 +78,16 @@ int main() {
         theta = distance_horizontal(THETA, PHI_off, zenc, azic);
 
         if (theta < R_win) {
-          //						horizon_equator( mjd, THETA,
-          //PHI_off, &RA, &DEC ); azi=direction_equatorial(RA,DEC,ra,dec);
+          //						horizon_equator( mjd,
+          //THETA, PHI_off, &RA, &DEC );
+          // azi=direction_equatorial(RA,DEC,ra,dec);
           phi_off =
               azic - 2 * asin(sin(R_win * deg_rad) / sin(THETA * deg_rad)) *
                          rad_deg * id;
-                             if (phi_off > 180.)
-      phi_off -= 360.;
-    if (phi_off < -180.)
-      phi_off += 360.;
+          if (phi_off > 180.)
+            phi_off -= 360.;
+          if (phi_off < -180.)
+            phi_off += 360.;
 
           horizon_equator(mjd, zenc, phi_off, &ra, &dec);
           phi = direction_equatorial(RA, DEC, ra, dec);

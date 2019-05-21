@@ -17,19 +17,18 @@ else
   # below, run over the list to create jobs
   #############################################################
 
-  for I in $(ls $InputDir/*.root); do
-    FileName=$(basename $I .root)
-    SubName=${BshName}_$FileName                 # submission name
+  for I in $(ls $InputDir); do
+    DateFolder=$InputDir/$I
+    SubName=${BshName}_$I                        # submission name
     cp -rf ${BshName}.bsh $TmpDir/${SubName}.bsh # make a temp copy of the .bsh file
     chmod 755 $TmpDir/${SubName}.bsh             # change file permission to allow execute
 
-    sed -i -e 's#ConfigFileName#'${FileName}'#g' $TmpDir/${SubName}.bsh
-    sed -i -e 's#ConfigInputDir#'${InputDir}'#g' $TmpDir/${SubName}.bsh
+    sed -i -e 's#ConfigInputDir#'${DateFolder}'#g' $TmpDir/${SubName}.bsh
     sed -i -e 's#ConfigOutputDir#'${OutputDir}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
 
     /afs/ihep.ac.cn/soft/common/sysgroup/hep_job/bin/hep_sub -site daocheng -g lhaasorun -os SL7 $TmpDir/${SubName}.bsh # submit job!!!
 
-    echo $FileName submitted # to show off~
+    echo $I submitted # to show off~
 
   done
 
