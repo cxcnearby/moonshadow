@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+    echo Parameters: RawDataDir SmoothRadius
+else
+
+    ExeDir=/eos/daocheng/user/w/wcdapls/changxc/moonshcheck
+    RawDataDir=$1
+    SmoothRadius=$2
+
+    cd $ExeDir
+    source /eos/daocheng/user/w/wcdapls/changxc/env.sh
+
+    if [ ! -e "$RawDataDir/comb.gz" ]; then
+        cat $RawDataDir/REC*.gz >$RawDataDir/comb.gz
+        rm -rf $RawDataDir/REC*.gz
+    fi
+    zcat $RawDataDir/comb.gz | ./mkhist_new.exe | ./smooth_new.exe $RawDataDir/comb.root $SmoothRadius
+# zcat $RawDataDir/comb.gz | ./mkhist_mod.exe | ./smooth.exe $RawDataDir/comb.root
+fi

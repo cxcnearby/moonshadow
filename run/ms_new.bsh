@@ -1,0 +1,15 @@
+#!/bin/bash
+
+ExeDir=/eos/daocheng/user/w/wcdapls/changxc/moonshcheck
+InputDir=ConfigInputDir
+OutputDir=ConfigOutputDir
+FileName=ConfigFileName
+
+cd $ExeDir
+source /eos/daocheng/user/w/wcdapls/changxc/env.sh
+
+ ./rst_input_new.exe $InputDir/$FileName.root | ./windows_newest.exe | gzip > $OutputDir/$FileName.gz
+# ./rst_input_new.exe $InputDir/$FileName.root | ./windows_mod_new.exe | gzip > $OutputDir/$FileName.gz
+#zcat $InputDir/$FileName.gz | ./windows_ascIII.exe | gzip > $OutputDir/$FileName.gz
+
+
