@@ -36,13 +36,13 @@ int main(int argc, char *argv[]) {
                &mjd, &nhit, &npea, &zen, &azi, &xc, &yc, &ndetc, &nfitc, &npec,
                &zenc, &azic, &omega, &chi2p, &chi2c, &compactness, &pincness,
                &id, &theta, &phi) > 0) {
+// if (!(mjd-floor(mjd)>0.286)&&(mjd-floor(mjd)<0.823))
+// continue;  
     //    if(zen>=50) continue;
-    if (nfitc > 100 && zenc < 50. && zenc > 0. ) {
+    if (nhit<100&&nfitc > 100 && zenc < 50. && zenc > 0. && compactness > 0 && compactness < 500) {
   //     double g = gmst( mjd ) + tibet_lo;
   // double lst = ( g - floor( g / 360.0 ) * 360.0 );
-if (mjd-floor(mjd)>0.32)
- continue;  
-      xd = floor((theta * sin(phi * deg_rad) + R_win) / bin_width + 0.5);
+     xd = floor((theta * sin(phi * deg_rad) + R_win) / bin_width + 0.5);
       yd = floor((theta * cos(phi * deg_rad) + R_win) / bin_width + 0.5);
       // yd = floor( ( r * sin( theta * deg_rad ) + 5.0 ) * DIFm +0.5 );
       // xd = floor( ( r * cos( theta * deg_rad ) + 5.0 ) * DIFm +0.5 );

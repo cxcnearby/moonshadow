@@ -44,12 +44,17 @@ typedef struct {
 
 int main(int argc, char *argv[]) {
 
+  if (argc != 2) {
+    printf("Usage :zcat input.gz | %s out.root\n", argv[0]);
+    exit(1);
+  }
+
   result_t result;
 
   int i, j;
   int id, xd, yd;
 
-  TFile *f = new TFile("crabcheck.root", "recreate");
+  TFile *f = new TFile(argv[1], "recreate");
   TTree *t = new TTree("t", "events within windows");
   t->Branch("mjd",&result.mjd);
   t->Branch("nhit",&result.nhit);

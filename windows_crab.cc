@@ -7,7 +7,7 @@
 
 #define debug_moon_pos 0
 #define R_win 5  /* radius of the window */
-#define id_max 4 /* the number of off-source windows in each side */
+#define id_max 3 /* the number of off-source windows in each side */
 
 #define deg_rad 0.017453292519943296 /*   pi/180  */
 #define rad_deg 57.295779513082322   /*   180/pi  */
