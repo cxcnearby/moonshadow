@@ -3,8 +3,8 @@
 #include <string.h>
 //#include"Astro.h"
 
-#define C 1.0015174
-#define S 0.9948174
+#define moon_C 1.0015174
+#define moon_S 0.9948174
 
 /********** Moon Orbit **********/
 
@@ -220,7 +220,7 @@ void moon_orbit(double mjd, double *MRAS, double *MDEC) {
   g = gmst(mjd) + tibet_lo;
   theta = (g - floor(g / 360.0) * 360.0) * deg_rad;
 
-  m = sin(SUMP * deg_rad) * C * cos(tibet_la * deg_rad) / cos(DEC);
+  m = sin(SUMP * deg_rad) * moon_C * cos(tibet_la * deg_rad) / cos(DEC);
 
   *MRAS =
       (atan(m * sin(RAS - theta) / (1 - m * cos(RAS - theta))) + RAS) * rad_deg;
@@ -230,10 +230,10 @@ void moon_orbit(double mjd, double *MRAS, double *MDEC) {
   if (*MRAS > 360.0)
     *MRAS -= 360.0;
 
-  gamma = atan(S / C * tan(tibet_la * deg_rad) *
+  gamma = atan(moon_S / moon_C * tan(tibet_la * deg_rad) *
                cos((*MRAS * deg_rad - RAS) / 2.0) /
                cos((*MRAS * deg_rad + RAS) / 2.0 - theta));
-  n = sin(SUMP * deg_rad) * S * sin(tibet_la * deg_rad) / sin(gamma);
+  n = sin(SUMP * deg_rad) * moon_S * sin(tibet_la * deg_rad) / sin(gamma);
 
   *MDEC =
       (atan(n * sin(DEC - gamma) / (1 - n * cos(DEC - gamma))) + DEC) * rad_deg;

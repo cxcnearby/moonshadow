@@ -6,7 +6,6 @@
 #include "Astro.h"
 #include "Moon.c"
 #include "Sun.c"
-#include <math.h>
 #include "TBranch.h"
 #include "TChain.h"
 #include "TF1.h"
@@ -15,10 +14,10 @@
 #include "TROOT.h"
 #include "TTree.h"
 #include <iostream>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 
 using namespace std;
 
@@ -47,7 +46,8 @@ int main(int argc, char *argv[]) {
   if (argc < 7) {
     printf("%s  InputPath  OutputFile.root  WindowRadius  bgWindowNumber  "
            "ZenithMax  SourceType  [source RA]  [source DEC]\n(SourceType: 1 "
-           "for Moon, 2 for Sun, 0 need RA & DEC)\n");
+           "for Moon, 2 for Sun, 0 need RA & DEC)\n",
+           argv[0]);
     exit(0);
   }
   string sInputPath = argv[1];
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
   int iSourceType = atoi(argv[5]);
   double dZenithMax = atof(argv[6]);
   double dZenithMin = asin(sin(dWindowRadius * deg_rad) /
-                           sin(pi / (2 * iWindowNumberOneSide + 1))) *
+                           sin(PI / (2 * iWindowNumberOneSide + 1))) *
                       rad_deg;
 
   double dRA, dDEC, dZENITH, dAZI;
@@ -139,7 +139,8 @@ int main(int argc, char *argv[]) {
       s_Event.azic = azirange(s_Event.azic);
       for (id = -iWindowNumberOneSide; id <= iWindowNumberOneSide; id++) {
         double dAziDiff =
-            2 * asin(sin(dWindowRadius * deg_rad) / sin(dZENITH * deg_rad)) * rad_deg * id;
+            2 * asin(sin(dWindowRadius * deg_rad) / sin(dZENITH * deg_rad)) *
+            rad_deg * id;
         double dAZIid = dAZI + dAziDiff;
         dAZIid = azirange(dAZIid);
         theta =
