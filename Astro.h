@@ -4,6 +4,7 @@
 void               moon_orbit(double mjd,double *MRAS,double *MDEC);
 void               sun_orbit(double mjd,double *SRAS,double *SDEC);
 double             gmst( double mjd );
+double             azirange(double azi);
 void               equator_horizon( double mjd, double ras, double dec, double *zen, double *azi );
 void               horizon_equator( double mjd, double zen, double azi, double *ras, double *dec );
 void               galaxcy_equator( double gras, double gdec, double *ras, double *dec );

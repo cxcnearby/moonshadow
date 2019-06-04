@@ -19,6 +19,14 @@ double gmst(double mjd){
 
 }
 
+double azirange(double azi) {
+  if (azi > 180.0)
+    azi -= 360.0;
+  if (azi < -180.)
+    azi += 360.0;
+  return azi;
+}
+
 
 /********** transfomation of (zenith & azimuth) 
             from (decrination & right asension)  **********/
