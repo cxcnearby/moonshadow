@@ -1,0 +1,68 @@
+#!/bin/bash
+
+if [ $# -lt 6 ]; then
+  echo "Parameters: InputDir OutputDir WindowRadius bgWindowNumber ZenithMax SourceType [source RA] [source DEC] (SourceType: 1 for Moon, 2 for Sun, 0 need RA & DEC)."
+else
+  BshName=ms_select        # .bsh file to run
+  InputDir=$1                        # input directory
+  OutputDir=$2/$(date "+%y%m%d%H%M") # output directory
+  WindowRadius=$3
+  bgWindowNumber=$4
+  ZenithMax=$5
+  SourceType=$6
+  if [ $# -eq 8 ]; then
+    RA=$7
+    DEC=$8
+  else
+    RA=0
+    DEC=0
+  fi
+  TmpDir=/afs/ihep.ac.cn/users/c/changxc/eos/tmp_sub/moonshcheck/${SourceType}_${RA}_${DEC}/$(date "+%y%m%d%H%M")
+
+  mkdir -p $TmpDir # create a temp folder to save job .bsh files
+
+  mkdir -p $OutputDir
+
+  #############################################################
+  # below, run over the list to create jobs
+  #############################################################
+  if [ "$(basename ${InputDir})" = "2019" ]; then
+    for I in $(ls $InputDir); do
+      DateFolder=$InputDir/$I
+      SubName=${BshName}_$I                        # submission name
+      cp -rf ${BshName}.bsh $TmpDir/${SubName}.bsh # make a temp copy of the .bsh file
+      chmod 755 $TmpDir/${SubName}.bsh             # change file permission to allow execute
+      sed -i -e 's#ConfigInputDir#'${DateFolder}'#g' $TmpDir/${SubName}.bsh
+      sed -i -e 's#ConfigOutputDir#'${OutputDir}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+      sed -i -e 's#ConfigWindowRadius#'${WindowRadius}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+      sed -i -e 's#ConfigbgWindowNumber#'${bgWindowNumber}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+      sed -i -e 's#ConfigZenithMax#'${ZenithMax}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+      sed -i -e 's#ConfigSourceType#'${SourceType}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+      sed -i -e 's#ConfigRA#'${RA}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+      sed -i -e 's#ConfigDEC#'${DEC}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+
+      hep_sub -g lhaaso $TmpDir/${SubName}.bsh # submit job!!!
+
+      echo $I submitted # to show off~
+
+    done
+  else
+    DateFolder=$InputDir
+    SubName=${BshName}_$(basename ${InputDir})                        # submission name
+    cp -rf ${BshName}.bsh $TmpDir/${SubName}.bsh # make a temp copy of the .bsh file
+    chmod 755 $TmpDir/${SubName}.bsh             # change file permission to allow execute
+    sed -i -e 's#ConfigInputDir#'${DateFolder}'#g' $TmpDir/${SubName}.bsh
+    sed -i -e 's#ConfigOutputDir#'${OutputDir}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+    sed -i -e 's#ConfigWindowRadius#'${WindowRadius}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+    sed -i -e 's#ConfigbgWindowNumber#'${bgWindowNumber}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+    sed -i -e 's#ConfigZenithMax#'${ZenithMax}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+    sed -i -e 's#ConfigSourceType#'${SourceType}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+    sed -i -e 's#ConfigRA#'${RA}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+    sed -i -e 's#ConfigDEC#'${DEC}'#g' $TmpDir/${SubName}.bsh                                               # use # instead of / to prevent the "/" ambiguity in directory
+
+    hep_sub -g lhaaso $TmpDir/${SubName}.bsh # submit job!!!
+
+    echo $I submitted # to show off~
+  fi
+
+fi

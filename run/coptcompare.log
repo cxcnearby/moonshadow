@@ -1,0 +1,10 @@
+tsel->Draw("compactness>>h1(100,0,100)","id==0&&theta<1");
+tsel->Draw("compactness>>h2(100,0,100)","id!=0&&theta<1");
+double scale1, scale2;
+scale1=1/(h1->Integral());
+scale2=1/(h2->Integral());
+h1->Scale(scale1);
+h2->Scale(scale2);
+h1->Draw();
+h2->Draw("same");
+TH1F h3 = *h1 - *h2;

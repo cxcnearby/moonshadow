@@ -1,0 +1,4 @@
+/* to check compactness */
+{
+  
+}

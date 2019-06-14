@@ -1,0 +1,2 @@
+#!/bin/bash
+cat $1 $2 $3 $4 | awk 'BEGIN{lt=0;et=0}{lt+=$1;et+=$2}END{print lt,et}'

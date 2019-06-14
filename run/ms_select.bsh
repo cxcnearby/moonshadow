@@ -1,0 +1,20 @@
+#!/bin/bash
+
+ExeDir=/afs/ihep.ac.cn/users/c/changxc/eos/moonshcheck
+InputDir=ConfigInputDir
+OutputDir=ConfigOutputDir
+FileName=$(basename $InputDir)
+WindowRadius=ConfigWindowRadius
+bgWindowNumber=ConfigbgWindowNumber
+ZenithMax=ConfigZenithMax
+SourceType=ConfigSourceType
+RA=ConfigRA
+DEC=ConfigDEC
+
+cd $ExeDir
+
+./select.exe $InputDir $OutputDir/$FileName.root $WindowRadius $bgWindowNumber $ZenithMax $SourceType $RA $DEC
+# ./rst_input_new.exe $InputDir/$FileName.root | ./windows_mod_new.exe | gzip > $OutputDir/$FileName.gz
+#zcat $InputDir/$FileName.gz | ./windows_ascIII.exe | gzip > $OutputDir/$FileName.gz
+
+
